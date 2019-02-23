@@ -1,5 +1,6 @@
 package com.example.atiinstagram;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.PersistableBundle;
 import android.support.annotation.Nullable;
@@ -38,6 +39,8 @@ public class signuplogin extends AppCompatActivity {
                     public void done(ParseException e) {
                         if (e==null){
                             FancyToast.makeText(signuplogin.this, "Signed Up Succesull  !", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true).show();
+                            Intent intent=new Intent(signuplogin.this,Welcome.class);
+                            startActivity(intent);
                         }else {
                             FancyToast.makeText(signuplogin.this, e.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, true).show();
                         }
@@ -53,6 +56,8 @@ ParseUser.logInInBackground(edt2username.getText().toString(), edt2password.getT
     public void done(ParseUser user, ParseException e) {
         if (user !=null && e==null){
             FancyToast.makeText(signuplogin.this, "Login sucessfull   !", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true).show();
+            Intent intent=new Intent(signuplogin.this,Welcome.class);
+            startActivity(intent);
         }else {
             FancyToast.makeText(signuplogin.this, e.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, true).show();
         }
