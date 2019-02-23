@@ -1,5 +1,6 @@
 package com.example.atiinstagram;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 private TextView txt1;
 private Button btngetdata;
 private String allkickbixer;
+private Button btnNextActivity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,6 +38,7 @@ private String allkickbixer;
         ed2=findViewById(R.id.edt2);
         txt1=findViewById(R.id.txt1);
         btngetdata=findViewById(R.id.btngetdata);
+        btnNextActivity=findViewById(R.id.btnNextActivity);
         txt1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -55,13 +58,14 @@ private String allkickbixer;
             public void onClick(View v) {
                 allkickbixer="";
                 ParseQuery<ParseObject> queryall=ParseQuery.getQuery("Kickboxer");
+                queryall.whereGreaterThan("Punch_Speed",100);
                 queryall.findInBackground(new FindCallback<ParseObject>() {
                     @Override
                     public void done(List<ParseObject> objects, ParseException e) {
                         if (e==null){
                             if (objects.size()>0){
-                                for (ParseObject kickboxer:objects){
-                                    allkickbixer=allkickbixer+kickboxer.get("Name") +"\n";
+                                for (ParseObject Kickboxer:objects){
+                                    allkickbixer=allkickbixer+Kickboxer.get("Name") +"\n";
                                 }
                                 FancyToast.makeText(MainActivity.this, allkickbixer, FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true).show();
                             }else {
@@ -72,19 +76,26 @@ private String allkickbixer;
                 });
             }
         });
+        btnNextActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i=new Intent(MainActivity.this,signuplogin.class);
+                startActivity(i);
+            }
+        });
     }
 
     @Override
     public void onClick(View v) {
         try {
-            final ParseObject kickboxer = new ParseObject("Kickboxer");
-            kickboxer.put("Name", ed1.getText().toString());
-            kickboxer.put("Punch_Speed", ed2.getText().toString());
-            kickboxer.saveInBackground(new SaveCallback() {
+            final ParseObject Kickboxer = new ParseObject("Kickboxer");
+            Kickboxer.put("Name", ed1.getText().toString());
+            Kickboxer.put("Punch_Speed", ed2.getText().toString());
+            Kickboxer.saveInBackground(new SaveCallback() {
                 @Override
                 public void done(ParseException e) {
                     if (e == null) {
-                        //Toast.makeText(MainActivity.this,kickboxer.get("Name")+"saved sucsessfull",Toast.LENGTH_LONG).show();
+                        //Toast.makeText(MainActivity.this,Kickboxer.get("Name")+"saved sucsessfull",Toast.LENGTH_LONG).show();
                         FancyToast.makeText(MainActivity.this, "Saved  !", FancyToast.LENGTH_LONG, FancyToast.SUCCESS, true).show();
                     } else {
                         FancyToast.makeText(MainActivity.this, e.getMessage(), FancyToast.LENGTH_LONG, FancyToast.ERROR, true).show();
